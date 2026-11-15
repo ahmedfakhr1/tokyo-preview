@@ -342,3 +342,16 @@ html.js .mindex__photo.in, html.js .room.in img { opacity: 1; }
   html.js .mindex__photo, html.js .room img { opacity: 1; }
 }
 .room { scroll-margin-top: var(--hdr); }
+
+/* ---------- one continuous dark, soft texture ---------- */
+.way:nth-of-type(n) { margin-top: 0; }
+.hero, .plates, .room, .book, .ftr, .mtitle, .rpage { position: relative; }
+.plates { background: linear-gradient(to bottom, var(--night) 0, var(--timber) clamp(160px, 22vw, 320px), var(--timber) calc(100% - clamp(160px, 22vw, 320px)), var(--night) 100%); }
+.ftr { background: var(--night); }
+.hero::after, .plates::after, .book::after, .ftr::after, .mtitle::after, .rpage::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: url(img/grain.webp) repeat; background-size: 160px 160px; opacity: .55; mix-blend-mode: overlay;
+}
+.plates > *, .book > *, .ftr > *, .mtitle > *, .rpage > * { position: relative; z-index: 1; }
+.room__tint { background: linear-gradient(to bottom, var(--night) 0, rgba(7, 9, 8, .1) 22%, rgba(7, 9, 8, .1) 70%, rgba(7, 9, 8, .55) 100%); }
+.sec-paper { position: relative; }
+.sec-paper::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: clamp(90px, 12vw, 180px); pointer-events: none; background: linear-gradient(to bottom, rgba(7, 9, 8, 0), rgba(7, 9, 8, .22)); }
