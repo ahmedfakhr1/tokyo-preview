@@ -4,7 +4,7 @@ Static site: `index.html`, `menu.html`, `reserve.html` (`visit.html` forwards to
 
 ## Reservation form
 
-Every "Book a table" and "Reservations" link on the site lands on the block with `id="reservation"` (on the home page and on `reserve.html`). Until a form exists, that block shows WhatsApp (with a prefilled table request) and Call buttons, so it works today.
+Every "Book a table" and "Reservations" link on the site lands on the block with `id="reservation"` (on the home page and on `reserve.html`). Until the form is ready, the block shows a space of the same size with "Online booking opens soon." and a phone link.
 
 Two ways to plug the form in, either one is enough:
 
@@ -14,7 +14,7 @@ Two ways to plug the form in, either one is enough:
    const RESERVATION_FORM_URL = "https://example.com/your-form";
    ```
 
-   The block then loads that address in a full-width, lazy-loaded frame (border-less, 780 px tall on desktop, 840 px on phones, titled "Reserve a table at Tokyo") and keeps WhatsApp and Call as two small links underneath. Change the height in `site.css` (`.resv__frame`) if the form needs more room.
+   The block then loads that address in a full-width, lazy-loaded frame (border-less, 780 px tall on desktop, 840 px on phones, titled "Reserve a table at Tokyo") and keeps a small Call link under it. Change the height in `site.css` (`.resv__frame`) if the form needs more room.
 
 2. **Embed snippet.** Paste the snippet the form provider gives you inside the marked container, in both `index.html` and `reserve.html` (it sits in the card on the right of the "Book a table" block):
 
@@ -24,9 +24,9 @@ Two ways to plug the form in, either one is enough:
    </div>
    ```
 
-   As soon as the container holds an element, it is shown and the WhatsApp and Call buttons step aside (they remain as the two small links).
+   As soon as the container holds an element, it is shown and the placeholder steps aside (a small Call link stays under the form).
 
-Leave `RESERVATION_FORM_URL` empty (`""`) to go back to WhatsApp and Call.
+Leave `RESERVATION_FORM_URL` empty (`""`) to go back to the placeholder.
 
 ## Cache version
 

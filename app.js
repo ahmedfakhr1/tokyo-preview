@@ -1,5 +1,5 @@
 // Reservation form: paste the form's address between the quotes to show it on the site.
-// Leave it empty to show the WhatsApp and phone buttons instead.
+// Leave it empty to keep the booking space with the phone link.
 const RESERVATION_FORM_URL = "";
 
 (function () {
@@ -115,6 +115,77 @@ const RESERVATION_FORM_URL = "";
     pickPhoto(0);
   }
 
+
+  /* motion: plates glide in once, progress line, drag to scroll, photos out of black, room drift */
+  var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var once = function (el, cls, opts) {
+    if (!el) return;
+    if (still || !('IntersectionObserver' in window)) { el.classList.add(cls); return; }
+    var o = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { el.classList.add(cls); o.disconnect(); } }, opts || { threshold: 0.18 });
+    o.observe(el);
+  };
+  once($('.plates'), 'is-in');
+  once($('.mindex__photo'), 'in');
+  once($('.room'), 'in', { threshold: 0.08 });
+
+  if (track) {
+    var bar = $('.plates__progress i');
+    var prog = function () {
+      if (!bar) return;
+      var max = track.scrollWidth - track.clientWidth;
+      var vis = track.clientWidth / track.scrollWidth;
+      bar.style.setProperty('--p', max <= 4 ? 1 : (vis + (1 - vis) * (track.scrollLeft / max)).toFixed(4));
+    };
+    track.addEventListener('scroll', prog, { passive: true });
+    window.addEventListener('resize', prog);
+    prog();
+    if (fine) {
+      var down = false, moved = 0, sx = 0, sl = 0, v = 0, lx = 0, raf = 0;
+      track.addEventListener('pointerdown', function (e) {
+        if (e.pointerType !== 'mouse' || e.button !== 0) return;
+        down = true; moved = 0; sx = lx = e.clientX; sl = track.scrollLeft; v = 0; cancelAnimationFrame(raf);
+      });
+      window.addEventListener('pointermove', function (e) {
+        if (!down) return;
+        var dx = e.clientX - sx; moved = Math.max(moved, Math.abs(dx));
+        if (moved > 5) { track.classList.add('is-drag'); track.scrollLeft = sl - dx; v = e.clientX - lx; lx = e.clientX; }
+      });
+      window.addEventListener('pointerup', function () {
+        if (!down) return; down = false;
+        if (!track.classList.contains('is-drag')) return;
+        var glide = function () {
+          v *= 0.93; track.scrollLeft -= v;
+          if (Math.abs(v) > 0.6 && !still) raf = requestAnimationFrame(glide); else track.classList.remove('is-drag');
+        };
+        glide();
+      });
+      track.addEventListener('click', function (e) { if (moved > 5) { e.preventDefault(); e.stopPropagation(); } }, true);
+      track.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    }
+  }
+
+  var room = $('.room'), rimg = room && $('img', room);
+  if (rimg && fine && !still) {
+    var tick = false;
+    var drift = function () {
+      tick = false;
+      var r = room.getBoundingClientRect(), vh = window.innerHeight;
+      if (r.bottom < 0 || r.top > vh) return;
+      var t = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2);
+      rimg.style.transform = 'translate3d(0,' + (-t * r.height * 0.05).toFixed(1) + 'px,0)';
+    };
+    window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(drift); } }, { passive: true });
+    drift();
+  }
+
+  /* on touch screens the menu photo follows the section name nearest the middle of the screen */
+  if (index && !(canHover && canHover.matches) && 'IntersectionObserver' in window) {
+    var mid = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) pickPhoto(ilinks.indexOf(en.target)); });
+    }, { rootMargin: '-49.5% 0px -49.5% 0px' });
+    ilinks.forEach(function (a) { mid.observe(a); });
+  }
+
   /* menu page: the index follows the section in view */
   var mnav = $('.mnav');
   if (mnav) {
@@ -124,7 +195,14 @@ const RESERVATION_FORM_URL = "";
       if (i < 0) return;
       mlinks.forEach(function (a, k) { if (k === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
       if (mnav.scrollWidth > mnav.clientWidth + 2) mnav.scrollLeft = Math.max(0, mlinks[i].offsetLeft - 20);
+      var mk = $('.mnav__mark', mnav), a = mlinks[i];
+      if (mk) {
+        mk.style.setProperty('--y', (a.offsetTop + (a.offsetHeight - 22) / 2) + 'px');
+        mk.style.setProperty('--x', a.offsetLeft + 'px');
+        mk.style.setProperty('--w', Math.max(24, a.offsetWidth - 14) + 'px');
+      }
     };
+    window.addEventListener('resize', function () { var c = mlinks.filter(function (a) { return a.hasAttribute('aria-current'); })[0]; mark(mlinks.indexOf(c)); });
     mark(0);
     if ('IntersectionObserver' in window) {
       var spy = new IntersectionObserver(function (es) {
@@ -135,7 +213,7 @@ const RESERVATION_FORM_URL = "";
     mlinks.forEach(function (a, i) { a.addEventListener('click', function () { mark(i); }); });
   }
 
-  /* reservation slot: the form address, a pasted embed, or WhatsApp and phone */
+  /* reservation slot: the form address or a pasted embed */
   $$('[data-resv]').forEach(function (slot) {
     var embed = $('[data-resv-embed]', slot);
     var url = String(RESERVATION_FORM_URL || '').trim();

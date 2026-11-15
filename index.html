@@ -19,9 +19,9 @@
 <link rel="preload" as="image" href="img/hero.webp" type="image/webp" fetchpriority="high">
 <style>html.fl body{opacity:0}body{transition:opacity .25s ease}</style>
 <script>(function(){var d=document.documentElement;d.classList.add("js","fl");var done=false;function go(){if(done)return;done=true;d.classList.remove("fl")}document.addEventListener("DOMContentLoaded",function(){if(!document.fonts||!document.fonts.load)return go();Promise.all([document.fonts.load('300 1em "Hanken Grotesk"'),document.fonts.load('600 1em "Hanken Grotesk"'),document.fonts.load('400 1em "Shippori Mincho"')]).then(go,go)});setTimeout(go,1200)})()</script>
-<link rel="stylesheet" href="fonts.css?v=3">
-<link rel="stylesheet" href="site.css?v=3">
-<script src="app.js?v=3" defer></script>
+<link rel="stylesheet" href="fonts.css?v=4">
+<link rel="stylesheet" href="site.css?v=4">
+<script src="app.js?v=4" defer></script>
 </head>
 <body data-open="810" data-close="60">
 <a class="skip" href="#main">Skip to content</a>
@@ -50,19 +50,17 @@
 
 <section class="plates" id="plates" aria-labelledby="plates-h">
 <div class="plates__head">
-<div class="rv"><h2 class="title" id="plates-h">The plates</h2><p class="lede">A few of the dishes, as they reach the table.</p></div>
+<div class="rv"><h2 class="title" id="plates-h">The plates</h2></div>
 <div class="arrows"><button class="arrow arrow--prev" type="button" aria-label="Previous dishes" aria-controls="plates-track" aria-disabled="true"></button><button class="arrow arrow--next" type="button" aria-label="Next dishes" aria-controls="plates-track" aria-disabled="false"></button></div>
 </div>
-<ul class="plates__track js-track" id="plates-track" role="list" tabindex="0" aria-label="Dishes, scroll sideways"><li class="plate"><div class="plate__img"><img src="img/plate-tiramisu.webp" width="720" height="973" alt="Tokyo&#x27;s tiramisu: a glass dome over a dark chocolate sphere, palms behind" loading="lazy" decoding="async"></div><h3 class="plate__n">Tokyo&#x27;s Tiramisu</h3><p class="plate__d">Light tiramisu in an inverted chocolate dome, fresh coffee poured on top.</p></li><li class="plate"><div class="plate__img"><img src="img/plate-gyoza.webp" width="960" height="1297" alt="Pan-seared shrimp gyoza on a black slate plate over green marble" loading="lazy" decoding="async"></div><h3 class="plate__n">Gyoza</h3><p class="plate__d">Pan-seared shrimp dumplings, hoisin ponzu sauce.</p></li><li class="plate"><div class="plate__img"><img src="img/plate-rolls.webp" width="720" height="973" alt="Rolls topped with spicy salmon, on long black plates" loading="lazy" decoding="async"></div><h3 class="plate__n">Sweet Shrimp Tempura</h3><p class="plate__d">Shrimp tempura, avocado mix, fresh salmon, crab.</p></li><li class="plate"><div class="plate__img"><img src="img/plate-table.webp" width="640" height="865" alt="A table seen from above in drifting dry-ice smoke, with a plate of golden cheese balls among the other dishes" loading="lazy" decoding="async"></div><h3 class="plate__n">Truffle Cheese Balls</h3><p class="plate__d">Breaded cheese balls, truffle sauce, crispy parmesan flakes.</p></li></ul>
+<ul class="plates__track js-track" id="plates-track" role="list" tabindex="0" aria-label="Dishes, scroll sideways"><li class="plate" style="--i:0"><div class="plate__img"><img src="img/plate-tiramisu.webp" width="720" height="973" alt="Tokyo&#x27;s tiramisu: a glass dome over a dark chocolate sphere, palms behind" loading="lazy" decoding="async"></div><h3 class="plate__n">Tokyo&#x27;s Tiramisu</h3><p class="plate__d">Light tiramisu in an inverted chocolate dome, fresh coffee poured on top.</p></li><li class="plate" style="--i:1"><div class="plate__img"><img src="img/plate-gyoza.webp" width="960" height="1297" alt="Pan-seared shrimp gyoza on a black slate plate over green marble" loading="lazy" decoding="async"></div><h3 class="plate__n">Gyoza</h3><p class="plate__d">Pan-seared shrimp dumplings, hoisin ponzu sauce.</p></li><li class="plate" style="--i:2"><div class="plate__img"><img src="img/plate-rolls.webp" width="720" height="973" alt="Rolls topped with spicy salmon, on long black plates" loading="lazy" decoding="async"></div><h3 class="plate__n">Sweet Shrimp Tempura</h3><p class="plate__d">Shrimp tempura, avocado mix, fresh salmon, crab.</p></li><li class="plate" style="--i:3"><div class="plate__img"><img src="img/plate-table.webp" width="640" height="865" alt="A table seen from above in drifting dry-ice smoke, with a plate of golden cheese balls among the other dishes" loading="lazy" decoding="async"></div><h3 class="plate__n">Truffle Cheese Balls</h3><p class="plate__d">Breaded cheese balls, truffle sauce, crispy parmesan flakes.</p></li></ul>
+<div class="plates__progress" aria-hidden="true"><i></i></div>
 </section>
 
 <section class="room" id="room" aria-labelledby="room-h">
+<h2 class="sr" id="room-h">The room</h2>
 <img src="img/room.webp" width="720" height="1280" alt="The Tokyo dining room: a long table under a dark timber ceiling, with a black lattice screen to one side" loading="lazy" decoding="async">
 <div class="room__tint"></div>
-<div class="room__cap">
-<h2 class="title" id="room-h">Dark timber, black lattice, low light.</h2>
-<p class="status js-status" data-open-text="Open now, until 1 AM" data-closed-text="Closed now, opens at 1:30 PM"></p>
-</div>
 </section>
 
 <div class="paper sec-paper">
@@ -104,12 +102,12 @@
 <div class="resv__embed" data-resv-embed>
 <!-- Reservation form: the form's embed snippet can be pasted here. -->
 </div>
-<div class="resv__fallback">
-<p class="lede">Call or send us a WhatsApp message with the day, the time and how many of you are coming.</p>
-<div class="resv__btns"><a class="btn btn--solid" href="https://wa.me/201555836617?text=Hello%20Tokyo%2C%20I%20would%20like%20to%20book%20a%20table.%0ADate%3A%20%0ATime%3A%20%0AGuests%3A%20" target="_blank" rel="noopener">WhatsApp</a><a class="btn" href="tel:+201555836617">Call 015 5583 6617</a></div>
+<div class="resv__soon">
+<p class="resv__soon-t">Online booking opens soon.</p>
+<a class="resv__call" href="tel:+201555836617">Or call 015 5583 6617</a>
 </div>
-<p class="resv__alt"><a href="https://wa.me/201555836617?text=Hello%20Tokyo%2C%20I%20would%20like%20to%20book%20a%20table.%0ADate%3A%20%0ATime%3A%20%0AGuests%3A%20" target="_blank" rel="noopener">WhatsApp</a><a href="tel:+201555836617">Call 015 5583 6617</a></p>
 </div>
+<p class="resv__alt"><a href="tel:+201555836617">Call 015 5583 6617</a></p>
 </div>
 </div>
 </section>
