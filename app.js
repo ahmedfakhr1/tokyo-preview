@@ -125,6 +125,12 @@ const RESERVATION_FORM_URL = "";
     o.observe(el);
   };
   once($('.plates'), 'is-in');
+  /* the entrance never competes with a swipe: the first touch or scroll of the strip ends it at once */
+  var plates = $('.plates');
+  if (plates && track) {
+    var calm = function () { plates.classList.add('is-in', 'is-calm'); };
+    ['touchstart', 'pointerdown', 'wheel', 'scroll'].forEach(function (ev) { track.addEventListener(ev, calm, { passive: true, once: true }); });
+  }
   once($('.mindex__photo'), 'in');
   once($('.room'), 'in', { threshold: 0.08 });
 
@@ -153,9 +159,22 @@ const RESERVATION_FORM_URL = "";
       window.addEventListener('pointerup', function () {
         if (!down) return; down = false;
         if (!track.classList.contains('is-drag')) return;
+        v = Math.max(-28, Math.min(28, v));
+        var settle = function () {
+          var cards = $$('.plate', track), best = 0, bd = Infinity, base = cards[0].offsetLeft;
+          cards.forEach(function (c) { var d = Math.abs((c.offsetLeft - base) - track.scrollLeft); if (d < bd) { bd = d; best = c.offsetLeft - base; } });
+          best = Math.min(best, track.scrollWidth - track.clientWidth);
+          var from = track.scrollLeft, t0 = performance.now(), dur = still ? 1 : 420;
+          var ease = function (now) {
+            var k = Math.min(1, (now - t0) / dur); k = 1 - Math.pow(1 - k, 3);
+            track.scrollLeft = from + (best - from) * k;
+            if (k < 1) raf = requestAnimationFrame(ease); else track.classList.remove('is-drag');
+          };
+          raf = requestAnimationFrame(ease);
+        };
         var glide = function () {
-          v *= 0.93; track.scrollLeft -= v;
-          if (Math.abs(v) > 0.6 && !still) raf = requestAnimationFrame(glide); else track.classList.remove('is-drag');
+          v *= 0.92; track.scrollLeft -= v;
+          if (Math.abs(v) > 0.8 && !still) raf = requestAnimationFrame(glide); else settle();
         };
         glide();
       });
