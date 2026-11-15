@@ -342,3 +342,7 @@ html.js .rv.in { opacity: 1; transform: none; }
   html.js .rv { opacity: 1; transform: none; }
   .slide img, .slide.is-on img { transform: none; }
 }
+
+/* quieter header */
+.hdr__nav a { font-size: 11px; letter-spacing: .22em; padding: 0 clamp(14px, 2vw, 30px); opacity: .85; }
+.hdr__nav a[aria-current="page"] { opacity: 1; }
