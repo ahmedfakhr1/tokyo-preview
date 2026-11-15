@@ -76,56 +76,63 @@ const RESERVATION_FORM_URL = "";
     }
   }
 
-  /* menus section: slow crossfade between photos */
-  var show = $('.js-slides');
-  if (show) {
-    var slides = $$('.slide', show), dots = $$('.dots button'), cur = 0, timer = null, visible = true;
-    var go = function (i) {
-      cur = (i + slides.length) % slides.length;
-      slides.forEach(function (s, k) { s.classList.toggle('is-on', k === cur); });
-      dots.forEach(function (d, k) { d.setAttribute('aria-current', k === cur ? 'true' : 'false'); });
+  /* the plates: arrows move the strip one card at a time (touch swipes it) */
+  var track = $('.js-track');
+  if (track) {
+    var arrows = $('.arrows'), prev = $('.arrow--prev'), next = $('.arrow--next');
+    var edge = function () {
+      var max = track.scrollWidth - track.clientWidth, x = track.scrollLeft;
+      if (arrows) arrows.classList.toggle('is-off', max <= 4);
+      if (prev) prev.setAttribute('aria-disabled', String(x <= 4));
+      if (next) next.setAttribute('aria-disabled', String(x >= max - 4));
     };
-    var stop = function () { clearInterval(timer); timer = null; };
-    var play = function () { if (still || timer || !visible || document.hidden) return; timer = setInterval(function () { go(cur + 1); }, 6500); };
-    dots.forEach(function (d, k) { d.addEventListener('click', function () { go(k); stop(); play(); }); });
-    document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else play(); });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) play(); else stop(); }, { threshold: 0.2 }).observe(show);
-    } else { play(); }
-    go(0);
+    var step = function (dir) {
+      var c = track.firstElementChild;
+      if (!c) return;
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      track.scrollBy({ left: dir * (c.getBoundingClientRect().width + gap), behavior: still ? 'auto' : 'smooth' });
+    };
+    if (prev) prev.addEventListener('click', function () { step(-1); });
+    if (next) next.addEventListener('click', function () { step(1); });
+    track.addEventListener('scroll', edge, { passive: true });
+    window.addEventListener('resize', edge);
+    edge();
   }
 
-  /* menu page: categories switch the list */
-  var tabs = $$('.mtab');
-  if (tabs.length) {
-    var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
-    var pick = function (i, focus) {
-      tabs.forEach(function (t, k) {
-        var on = k === i;
-        t.setAttribute('aria-selected', String(on));
-        t.tabIndex = on ? 0 : -1;
-        panels[k].hidden = !on;
-      });
-      if (focus) tabs[i].focus();
+  /* menu index on the home page: the photo follows the section being hovered or focused */
+  var index = $('.js-index');
+  if (index) {
+    var ilinks = $$('a', index), iimgs = $$('.mindex__photo img');
+    var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)');
+    var pickPhoto = function (i) {
+      iimgs.forEach(function (im, k) { im.classList.toggle('is-on', k === i); });
+      ilinks.forEach(function (a, k) { a.classList.toggle('is-on', k === i); });
     };
-    var fromHash = function () {
-      var id = decodeURIComponent((location.hash || '').slice(1));
-      var i = panels.findIndex(function (p) { return p && p.id === id; });
-      return i < 0 ? 0 : i;
-    };
-    tabs.forEach(function (t, k) {
-      t.addEventListener('click', function () {
-        pick(k);
-        try { history.replaceState(null, '', '#' + panels[k].id); } catch (e) { /* address bar not writable here */ }
-      });
-      t.addEventListener('keydown', function (e) {
-        var n = e.key === 'ArrowRight' ? k + 1 : e.key === 'ArrowLeft' ? k - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null;
-        if (n === null) return;
-        e.preventDefault(); pick((n + tabs.length) % tabs.length, true);
-      });
+    ilinks.forEach(function (a, i) {
+      a.addEventListener('mouseenter', function () { if (canHover && canHover.matches) pickPhoto(i); });
+      a.addEventListener('focus', function () { pickPhoto(i); });
     });
-    window.addEventListener('hashchange', function () { pick(fromHash()); });
-    pick(fromHash());
+    pickPhoto(0);
+  }
+
+  /* menu page: the index follows the section in view */
+  var mnav = $('.mnav');
+  if (mnav) {
+    var mlinks = $$('a', mnav);
+    var msecs = mlinks.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    var mark = function (i) {
+      if (i < 0) return;
+      mlinks.forEach(function (a, k) { if (k === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+      if (mnav.scrollWidth > mnav.clientWidth + 2) mnav.scrollLeft = Math.max(0, mlinks[i].offsetLeft - 20);
+    };
+    mark(0);
+    if ('IntersectionObserver' in window) {
+      var spy = new IntersectionObserver(function (es) {
+        es.forEach(function (en) { if (en.isIntersecting) mark(msecs.indexOf(en.target)); });
+      }, { rootMargin: '-28% 0px -62% 0px' });
+      msecs.forEach(function (s) { if (s) spy.observe(s); });
+    }
+    mlinks.forEach(function (a, i) { a.addEventListener('click', function () { mark(i); }); });
   }
 
   /* reservation slot: the form address, a pasted embed, or WhatsApp and phone */
