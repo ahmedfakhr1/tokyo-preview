@@ -287,9 +287,10 @@ const RESERVATION_FORM_URL = "";
 (function () {
   var pv = document.getElementById('pv'), track = document.getElementById('plates-track'); if (!pv || !track) return;
   var cards = [].slice.call(track.querySelectorAll('.plate')), img = document.createElement('img'), cap = pv.querySelector('.pv__cap'), cur = 0, back = null;
-  img.className = 'pv__img'; img.alt = ''; pv.querySelector('.pv__fig').insertBefore(img, cap);
+  img.className = 'pv__img'; img.alt = '';
   var show = function (i) {
     cur = (i + cards.length) % cards.length;
+    if (!img.parentNode) { var s0 = cards[cur].querySelector('img'); img.src = s0.currentSrc || s0.src; pv.querySelector('.pv__fig').insertBefore(img, cap); }
     var src = cards[cur].querySelector('img'), n = cards[cur].querySelector('.plate__n');
     img.classList.add('is-swap');
     setTimeout(function () { img.src = src.currentSrc || src.src; img.alt = src.alt; cap.textContent = n ? n.textContent : ''; img.classList.remove('is-swap'); }, img.src ? 180 : 0);
