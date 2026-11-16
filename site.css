@@ -419,3 +419,8 @@ html.js .hdr.is-away { transform: translateY(-102%); }
 @media (max-width: 700px) { .pv { grid-template-columns: 0 minmax(0, 1fr) 0; padding: 0 12px; } .pv__nav, .pv__nav--p, .pv__nav--n { position: absolute; bottom: 22px; grid-column: auto; } .pv__nav--p { left: calc(50% - 64px); } .pv__nav--n { left: calc(50% + 16px); } .pv__img { max-height: calc(100svh - 210px); } }
 @media (prefers-reduced-motion: reduce) { .pv, .pv__img, .plate__img img { transition: none; } }
 html.pv-open { overflow: hidden; }
+
+/* three ways: centred in their columns, a little closer to the menu */
+.way { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.way p { margin-inline: auto; }
+.ways { margin-top: clamp(80px, 9vw, 140px); }
