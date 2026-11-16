@@ -424,3 +424,10 @@ html.pv-open { overflow: hidden; }
 .way { text-align: center; display: flex; flex-direction: column; align-items: center; }
 .way p { margin-inline: auto; }
 .ways { margin-top: clamp(80px, 9vw, 140px); }
+
+/* ---------- light glass over paper ---------- */
+.hdr__nav a, .ar, .hdr__book, .hdr__burger i, .hdr__brand img { transition: color .45s var(--ease), background-color .45s var(--ease), filter .45s var(--ease), opacity .45s var(--ease); }
+html.js .hdr.is-glass.on-light { background: rgba(239, 235, 228, .72); }
+.hdr.is-glass.on-light .hdr__nav a, .hdr.is-glass.on-light .ar, .hdr.is-glass.on-light .hdr__book { color: #16130f; opacity: 1; }
+.hdr.is-glass.on-light .hdr__burger i { background: #16130f; }
+.hdr.is-glass.on-light .hdr__brand img { filter: brightness(.62) saturate(1.3); }

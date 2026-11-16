@@ -335,3 +335,19 @@ const RESERVATION_FORM_URL = "";
     if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy)) show(cur + (dx < 0 ? 1 : -1)); else if (dy > 90) close();
   }, { passive: true });
 })();
+
+/* top bar glass takes the colour of what is under it: light glass over the paper sections */
+(function () {
+  var h = document.querySelector('.hdr'), light = [].slice.call(document.querySelectorAll('.sec-paper'));
+  if (!h || !light.length) return;
+  var busy = false;
+  var run = function () {
+    busy = false;
+    var y = h.getBoundingClientRect().bottom - 8, on = false;
+    light.forEach(function (s) { var r = s.getBoundingClientRect(); if (r.top <= y && r.bottom >= y) on = true; });
+    h.classList.toggle('on-light', on);
+  };
+  window.addEventListener('scroll', function () { if (!busy) { busy = true; requestAnimationFrame(run); } }, { passive: true });
+  window.addEventListener('resize', run);
+  run();
+})();
