@@ -377,3 +377,9 @@ html.js .plates.is-calm .plate { transition: none; opacity: 1; transform: none; 
 .mindex__arrow:active { transform: scale(.94); }
 .mindex__arrow:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 html:not(.js) .mindex__arrow { display: none; }
+
+/* ---------- top bar: clear at the top, dark glass on the way back up ---------- */
+html.js .hdr, html.js .hdr.is-solid, html.js .hdr--static { background: transparent; transition: transform .6s var(--ease), background-color .5s var(--ease); }
+html.js .hdr.is-glass { background: rgba(8, 8, 8, .62); -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); }
+html.js .hdr.is-away { transform: translateY(-102%); }
+@media (prefers-reduced-motion: reduce) { html.js .hdr { transition: none; } }

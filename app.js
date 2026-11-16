@@ -264,3 +264,21 @@ const RESERVATION_FORM_URL = "";
     }
   });
 })();
+
+/* top bar: clear at the top of the page, slips away on the way down, returns as dark glass on the way up */
+(function () {
+  var h = document.querySelector('.hdr'); if (!h) return;
+  var last = window.scrollY, busy = false;
+  var run = function () {
+    busy = false;
+    var y = window.scrollY, open = h.classList.contains('menu-open') || document.querySelector('#drawer.is-open');
+    h.classList.toggle('is-glass', y > 40);
+    if (open || y < 120) h.classList.remove('is-away');
+    else if (y > last + 6) h.classList.add('is-away');
+    else if (y < last - 6) h.classList.remove('is-away');
+    last = y;
+  };
+  window.addEventListener('scroll', function () { if (!busy) { busy = true; requestAnimationFrame(run); } }, { passive: true });
+  h.addEventListener('focusin', function () { h.classList.remove('is-away'); });
+  run();
+})();
