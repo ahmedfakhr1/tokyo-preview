@@ -286,7 +286,8 @@ const RESERVATION_FORM_URL = "";
 /* plates: press a photo, it sinks a little, then opens full screen; arrows, swipe and keys step through */
 (function () {
   var pv = document.getElementById('pv'), track = document.getElementById('plates-track'); if (!pv || !track) return;
-  var cards = [].slice.call(track.querySelectorAll('.plate')), img = pv.querySelector('.pv__img'), cap = pv.querySelector('.pv__cap'), cur = 0, back = null;
+  var cards = [].slice.call(track.querySelectorAll('.plate')), img = document.createElement('img'), cap = pv.querySelector('.pv__cap'), cur = 0, back = null;
+  img.className = 'pv__img'; img.alt = ''; pv.querySelector('.pv__fig').insertBefore(img, cap);
   var show = function (i) {
     cur = (i + cards.length) % cards.length;
     var src = cards[cur].querySelector('img'), n = cards[cur].querySelector('.plate__n');
@@ -299,7 +300,7 @@ const RESERVATION_FORM_URL = "";
   };
   var close = function () {
     pv.classList.remove('is-on'); document.documentElement.classList.remove('pv-open');
-    setTimeout(function () { pv.hidden = true; img.removeAttribute('src'); }, 450);
+    setTimeout(function () { pv.hidden = true; }, 450);
     if (back && back.focus) back.focus();
   };
   cards.forEach(function (c, i) {
