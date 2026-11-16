@@ -367,3 +367,13 @@ main img { filter: saturate(.86) contrast(1.04) sepia(.06); }
 html.js .plates:not(.is-in) .plate { transform: translateX(28px); }
 html.js .plates .plate { transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: calc(var(--i, 0) * 70ms); }
 html.js .plates.is-calm .plate { transition: none; opacity: 1; transform: none; }
+
+/* ---------- menu index: arrows on the photograph step through the sections ---------- */
+@media (hover: none) { .mindex__photo img:not(:first-child) { display: block; } .mindex__list a.is-on { color: var(--ember); } }
+.mindex__arrow { position: absolute; top: 50%; z-index: 2; width: 48px; height: 48px; margin-top: -24px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, .34); border-radius: 50%; background: rgba(10, 10, 10, .34); color: #fff; cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: background .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease); -webkit-tap-highlight-color: transparent; }
+.mindex__arrow--prev { left: 14px; }
+.mindex__arrow--next { right: 14px; }
+.mindex__arrow:hover { background: rgba(10, 10, 10, .6); border-color: rgba(255, 255, 255, .7); }
+.mindex__arrow:active { transform: scale(.94); }
+.mindex__arrow:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+html:not(.js) .mindex__arrow { display: none; }

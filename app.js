@@ -112,6 +112,20 @@ const RESERVATION_FORM_URL = "";
       a.addEventListener('mouseenter', function () { if (canHover && canHover.matches) pickPhoto(i); });
       a.addEventListener('focus', function () { pickPhoto(i); });
     });
+    var cur = 0, basePick = pickPhoto;
+    pickPhoto = function (i) { cur = (i + iimgs.length) % iimgs.length; basePick(cur); };
+    var prevB = $('.js-idx-prev'), nextB = $('.js-idx-next');
+    if (prevB) prevB.addEventListener('click', function () { pickPhoto(cur - 1); });
+    if (nextB) nextB.addEventListener('click', function () { pickPhoto(cur + 1); });
+    var box = $('.mindex__photo'), sx = null, sy = 0;
+    if (box) {
+      box.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+      box.addEventListener('touchend', function (e) {
+        if (sx === null) return;
+        var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; sx = null;
+        if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.4) pickPhoto(cur + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+    }
     pickPhoto(0);
   }
 
