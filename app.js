@@ -351,3 +351,10 @@ const RESERVATION_FORM_URL = "";
   window.addEventListener('resize', run);
   run();
 })();
+
+/* delivery apps: a name links to its store once data-href holds the address */
+[].forEach.call(document.querySelectorAll('.js-app'), function (a) {
+  var u = a.getAttribute('data-href');
+  if (u) { a.href = u; a.target = '_blank'; a.rel = 'noopener'; }
+  else { var s = document.createElement('span'); s.className = a.className.replace('js-app', '') + ' is-plain'; s.textContent = a.textContent; a.parentNode.replaceChild(s, a); }
+});

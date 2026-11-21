@@ -431,3 +431,33 @@ html.js .hdr.is-glass.on-light { background: rgba(239, 235, 228, .72); }
 .hdr.is-glass.on-light .hdr__nav a, .hdr.is-glass.on-light .ar, .hdr.is-glass.on-light .hdr__book { color: #16130f; opacity: 1; }
 .hdr.is-glass.on-light .hdr__burger i { background: #16130f; }
 .hdr.is-glass.on-light .hdr__brand img { filter: brightness(.62) saturate(1.3); }
+
+/* ---------- menu photo arrows: off the photo, two fine chevrons under it ---------- */
+.mindex__photo { overflow: visible; margin-bottom: 52px; }
+.mindex__photo img { clip-path: inset(0); }
+.mindex__arrow { top: auto; bottom: -50px; margin-top: 0; width: 44px; height: 44px; border: 0; border-radius: 0; background: none; color: var(--ink); -webkit-backdrop-filter: none; backdrop-filter: none; opacity: .62; }
+.mindex__arrow svg { width: 20px; height: 20px; }
+.mindex__arrow--prev { left: auto; right: 40px; }
+.mindex__arrow--next { right: -8px; }
+.mindex__arrow:hover { background: none; opacity: 1; }
+.mindex__arrow:focus-visible { outline: 1px solid var(--ink); outline-offset: 0; }
+
+/* ---------- three ways: calmer proportions, same rhythm in each ---------- */
+.way h3 { font-size: clamp(30px, 2.6vw, 40px); margin-bottom: 12px; }
+.way p { font-size: 15.5px; }
+.way .link, .way__apps { margin-top: 14px; }
+.way .link { font-size: 11.5px; letter-spacing: .26em; font-weight: 500; text-underline-offset: 7px; }
+.way__apps { display: flex; align-items: center; justify-content: center; gap: 18px; }
+.way__apps .link { margin-top: 0; }
+.way__apps .is-plain { text-decoration: none; }
+.way__dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .45; }
+@media (max-width: 760px) {
+  .ways { gap: 0; }
+  .way { padding: 34px 0; }
+  .way + .way { border-top: 1px solid rgba(20, 17, 13, .12); }
+  .way h3 { font-size: 32px; margin-bottom: 8px; }
+  .way p { max-width: 22em; }
+}
+
+/* top bar: fully clear at all times (Ahmed); text colour still follows the section */
+html.js .hdr.is-glass, html.js .hdr.is-glass.on-light { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
